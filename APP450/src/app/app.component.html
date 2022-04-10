@@ -1,4 +1,3 @@
-
 <!-- Toolbar -->
 <!-- <div class="toolbar" role="banner">
   <img
@@ -20,34 +19,62 @@
   <div class="main-content">
     <div class="container">
       <div class="row">
-        <div class="col-12"><h2>All Content on table</h2></div>
+        <div class="col-12">
+          <h2>All Content on table</h2>
+          <button type="button" class="btn btn-primary" data-toggle="modal" (click)="ispub = !ispub; switchSearch()"
+            data-target="#exampleModal">
+            Filter by {{ ispub ? 'Publications' : 'Authors' }}
+          </button>
+        </div>
         <div class="col-12 my-4">
-          <form [formGroup]="formControls">
+          <form [formGroup]="formControls" class="row">
             <div class="form-group w-100">
-              <input type="search" class="form-control" formControlName="search" placeholder="Search..." id="exampleInputEmail1" aria-label="Search">
+              <input type="search" class="form-control" formControlName="search" placeholder="Search..."
+                id="exampleInputEmail1" aria-label="Search">
+            </div>
+            <div class="col-12">
+              <label for="exampleDataList" class="form-label">ID:</label>
+              <input class="form-control" list="datalistOptions" formControlName="id" id="exampleDataList"
+                placeholder="Search by Id">
+              <datalist id="datalistOptions">
+                <option *ngFor="let item of allIds" [value]="item">
+              </datalist>
             </div>
           </form>
         </div>
 
         <div class="col-12">
-          <div class="row align-items-start">
+          <div class="row align-items-start" *ngIf="ispub">
             <div class="col col-sm-4" *ngFor="let item of viewItem">
               <div class="card border-dark mb-3">
                 <div class="card-header">{{item.type}}</div>
                 <div class="card-body text-dark">
                   <h5 class="card-title">{{item.title}}</h5>
-                  <p class="card-text">{{item.summary.length > 200 ? item.summary.substring(0, 100) + '...' : item.summary}}</p>
+                  <p class="card-text">{{item?.summary?.length > 200 ? item?.summary?.substring(0, 100) + '...' :
+                    item.summary}}</p>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">Release year: {{ item.year }}</small>
                 </div>
               </div>
             </div>
+          </div>
+          <div class="row align-items-start" *ngIf="!ispub">
+            <div class="col col-sm-4" *ngFor="let item of viewItem">
+              <div class="card" style="width: 18rem;">
+                <img src="assets\profile.jpg" class="card-img-top" alt=""/>
+                <div class="card-body">
+                  <div class="card-header">{{item.author}}</div>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">ID#: {{ item.publicationid }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
 
-<router-outlet></router-outlet>
+    <router-outlet></router-outlet>
